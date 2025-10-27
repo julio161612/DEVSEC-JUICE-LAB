@@ -1,0 +1,46 @@
+name: Security Scan
+
+on:
+  push:
+    branchster:
+      - main
+  pull_request:
+    brancaster:
+      - main
+
+jobs:
+  scan:
+    name: Run Security Scans
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Semgrep
+        run: pip install semgrep
+
+      - name: Install npm dependencies
+        run: npm install --package-lock-only
+
+      - name: Run security scans
+        run: |
+          mkdir -p reports
+          semgrep --config auto --json > reports/semgrep-report.json || echo "⚠️ Semgrep finished with warnings"
+          npm audit --json > reports/npm-audit-report.json || echo "⚠️ npm audit finished with warnings"
+
+      - name: Upload reports
+         with:
+          name: security-reports
+          name: security-reports
+        path: reports/

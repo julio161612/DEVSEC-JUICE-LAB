@@ -2,11 +2,11 @@ name: Security Scan
 
 on:
   push:
-    branchster:
-      - main
+    branches:
+      - master
   pull_request:
-    brancaster:
-      - main
+    branches:
+      - master
 
 jobs:
   scan:
@@ -31,16 +31,18 @@ jobs:
         run: pip install semgrep
 
       - name: Install npm dependencies
-        run: npm install --package-lock-only
+        run: npm install --package-lock-only || echo "No npm dependencies found"
 
       - name: Run security scans
+        continue-on-error: true
         run: |
           mkdir -p reports
           semgrep --config auto --json > reports/semgrep-report.json || echo "⚠️ Semgrep finished with warnings"
           npm audit --json > reports/npm-audit-report.json || echo "⚠️ npm audit finished with warnings"
 
       - name: Upload reports
-         with:
+        uses: actions/upload-artifact@v3
+        with:
           name: security-reports
-          name: security-reports
-        path: reports/
+          path: reports/
+

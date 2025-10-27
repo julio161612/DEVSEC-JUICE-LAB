@@ -1,0 +1,36 @@
+name: OWASP ZAP DAST Scan
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  dast:
+    name: Run OWASP ZAP Scan
+    runs-on: ubuntu-latest
+    container:
+      image: owasp/zap2docker-stable:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Start Juice Shop (Docker)
+        run: |
+          docker pull bkimminich/juice-shop
+          docker run -d -p 3000:3000 --name juice-shop bkimminich/juice-shop
+          sleep 20
+
+      - name: Run OWASP ZAP Baseline Scan
+        run: |
+          zap-baseline.py -t http://host.docker.internal:3000 -r reports/zap-report.html -J reports/zap-report.json
+
+      - name: Upload ZAP reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-reports
+          path: reports/

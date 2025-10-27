@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
 
@@ -41,7 +41,7 @@ jobs:
           npm audit --json > reports/npm-audit-report.json || echo "⚠️ npm audit finished with warnings"
 
       - name: Upload reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: security-reports
           path: reports/

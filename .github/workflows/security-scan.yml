@@ -42,6 +42,9 @@ jobs:
           semgrep --config auto --json > reports/semgrep-report.json || echo "⚠️ Semgrep finished with warnings"
           npm audit --json > reports/npm-audit-report.json || echo "⚠️ npm audit finished with warnings"
 
+      - name: Generate summary
+        run: python scripts/summary.py
+
       - name: Upload reports
         uses: actions/upload-artifact@v4
         with:

@@ -49,6 +49,26 @@ No ejecutes OWASP Juice Shop en entornos públicos o de producción.
 
 Usa este laboratorio como práctica personal o para mostrar tus habilidades.
 
+## Resumen del proyecto
+
+DEVSEC-JUICE-LAB es un pipeline DevSecOps reproducible que automatiza SAST (Semgrep/CodeQL), análisis de dependencias (npm audit) y DAST (OWASP ZAP) contra una aplicación vulnerable (Juice Shop), generando reportes y artefactos para triage.
+Se integra en GitHub Actions para ejecuciones automáticas en cada push/PR y produce evidencia (JSON/HTML/pcap/logs) lista para auditoría.
+
+
+## Reproducible en empresas — cómo y por qué
+
+Contenedores y compose: Juice Shop y ZAP se ejecutan en Docker (o Docker Compose), garantizando que cualquier equipo pueda levantar la misma versión de la app y escáneres en poco tiempo.
+
+Automatización y artefactos: los workflows producen artefactos y alertas (reportes JSON/HTML, resumen en logs) que encajan con procesos corporativos de triage (crear tickets, asignar remediaciones), facilitando integración con ticketing/Slack/SIEM.
+
+## Escalabilidad
+
+Herramientas y paralelización: convertir jobs en ejecuciones paralelas (por servicio/por microservicio) y añadir escáneres adicionales (SCA, secret scanners, container scanners).
+
+SIEM: enviar logs/reportes a ELK/OpenSearch, Wazuh o Splunk para correlación y alertas centralizadas, y orquestar respuestas (crear issues, abrir PRs) automáticamente.
+
+Políticas y gating: añadir gates de política y dashboards para gestión de riesgo en escala.
+
 
 📬 Autor
 Julio — Estudiante de Ciberseguridad
